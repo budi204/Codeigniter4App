@@ -8,4 +8,8 @@ class Home extends BaseController
     {
         return view('welcome_message');
     }
+
+    public function about($name = '', $age = 0) {
+        echo "Hello nama saya $name, umur $age tahun";
+    }
 }
