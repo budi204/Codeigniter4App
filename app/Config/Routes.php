@@ -32,9 +32,10 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
-$routes->get('/about/(:any)/(:alphanum)', 'Home::about/$1/$2');
+$routes->get('/about', 'Home::about');
+$routes->get('/page', 'Pages::index');
+$routes->get('/page/about', 'Pages::about');
 
-$routes->get('/user', 'Admin\UserController::index');
 /*
  * --------------------------------------------------------------------
  * Additional Routing
