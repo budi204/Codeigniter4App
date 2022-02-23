@@ -12,6 +12,9 @@
             <li class="nav-item">
               <a class="nav-link" href="<?= base_url('/contact'); ?>">Contact</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<?= base_url('/book'); ?>">Books</a>
+            </li>
           </ul>
         </div>
     </div>
