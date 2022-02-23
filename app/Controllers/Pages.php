@@ -9,16 +9,32 @@ class Pages extends BaseController
       $data = [
         'title' => 'Home Page'
       ];
-      echo view('layouts/header', $data);
-      echo view('pages/index');
-      echo view('layouts/footer');
+      return view('pages/index', $data);
     }
     public function about() {
       $data = [
         'title' => 'About Page'
       ];
-      echo view('layouts/header', $data);
-      echo view('pages/about');
-      echo view('layouts/footer');
+      return view('pages/about', $data);
+    }
+    public function contact() {
+      $data = [
+        'title' => 'Contact Us',
+        'alamat' => [
+          [
+            'alamat' => 'Rumah',
+            'jalan' => 'Jl. abc No. 123',
+            'kota' => 'Serang'
+          ],
+          [
+            'alamat' => 'Kantor',
+            'jalan' => 'Jl. def No. 456',
+            'kota' => 'Jakarta'
+          ]
+        ]
+      ];
+
+      return view('pages/contact', $data);
+
     }
 }
