@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-3">
     <div class="container ">
         <a class="navbar-brand" href="<?= base_url('/'); ?>">Navbar</a>
         <div class="collapse navbar-collapse" id="navbarNav">
