@@ -62,10 +62,33 @@ class Books extends BaseController
                     'required' => '{field} harus diisi',
                     'is_unique' => '{field} sudah terdaftar'
                 ]
+                ],
+            'cover' => [
+                'rules' => 'max_size[cover,2048]|is_image[cover]|mime_in[cover,image/jpg,image/jpeg,image/png]',
+                'errors' => [
+                    'max_size' => 'Ukuran gambar terlalu besar, maksimal 2MB',
+                    'is_image' => 'File yang anda pilih bukan gambar',
+                    'mime_in' => 'Format gambar tidak sesuai'
+                ]
             ]
         ])) {
-            $validation = \Config\Services::validation();
-            return redirect()->to(base_url('/book/create'))->withInput()->with('validation', $validation);
+            // $validation = \Config\Services::validation();
+            // return redirect()->to(base_url('/book/create'))->withInput()->with('validation', $validation);
+            return redirect()->to(base_url('/book/create'))->withInput();
+        }
+
+        //ambil gambar
+        $fileImage = $this->request->getFile('cover');
+        //cek apakah ada gambar yang diupload
+        //code 4 artinya tidak ada file yang diupload
+        if($fileImage->getError() == 4) {
+            $coverName = 'default.jpg';
+        } else {
+            //generate nama random
+            $coverName = $fileImage->getRandomName();
+
+            //pindah gambar ke folder public/img
+            $fileImage->move('img', $coverName);
         }
 
 
@@ -74,7 +97,7 @@ class Books extends BaseController
          $this->books->save([
              'title' => $this->request->getVar('title'),
              'slug' => $slug,
-             'cover' => $this->request->getVar('cover'),
+             'cover' => $coverName,
              'publisher' => $this->request->getVar('publisher')
          ]);
 
@@ -84,6 +107,13 @@ class Books extends BaseController
     }
 
     public function delete($id) {
+        //cari gambar berdasarkan id
+        $bookCover = $this->books->find($id);
+        //hapus gambar
+        if($bookCover['cover'] != 'default.jpg') {
+            unlink('img/' . $bookCover['cover']);
+        }
+
         $this->books->delete($id);
 
         session()->setFlashdata('message', 'Book deleted');
@@ -118,11 +148,36 @@ class Books extends BaseController
                     'required' => '{field} harus diisi',
                     'is_unique' => '{field} sudah terdaftar'
                 ]
+                ],
+            'cover' => [
+                'rules' => 'max_size[cover,2048]|is_image[cover]|mime_in[cover,image/jpg,image/jpeg,image/png]',
+                'errors' => [
+                    'max_size' => 'Ukuran gambar terlalu besar, maksimal 2MB',
+                    'is_image' => 'File yang anda pilih bukan gambar',
+                    'mime_in' => 'Format gambar tidak sesuai'
+                ]
             ]
         ])) {
-            $validation = \Config\Services::validation();
-            return redirect()->to('/book/edit/' . $oldData['slug'])->withInput()->with('validation', $validation);
+            return redirect()->to('/book/edit/' . $oldData['slug'])->withInput();
         }
+
+        //ambil gambar
+        $oldCover = $this->request->getVar('oldCover');
+        $newCover = $this->request->getFile('cover');
+        //cek apakah gambar berubah
+        if($newCover->getError() == 4) {
+            $coverName = $oldCover;
+        } else {
+            //generate nama random
+            $coverName = $newCover->getRandomName();
+            //pindahkan gambar ke folder public/img
+            $newCover->move('img', $coverName);
+            //hapus gambar lama
+            if($oldCover != 'default.jpg') {
+                unlink('img/'. $oldCover);
+            }
+        }
+        
 
         $slug = url_title($this->request->getVar('title'), '-', true);
 
@@ -130,7 +185,7 @@ class Books extends BaseController
             'id' => $id,
             'title' => $this->request->getVar('title'),
             'slug' => $slug,
-            'cover' => $this->request->getVar('cover'),
+            'cover' => $coverName,
             'publisher' => $this->request->getVar('publisher'),
         ]);
         
