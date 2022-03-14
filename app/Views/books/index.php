@@ -20,9 +20,10 @@
             </tr>
         </thead>
         <tbody>
+            <?php $i= 1; ?>
             <?php foreach($books as $book) : ?>
             <tr>
-            <td><?= $book['id']; ?></td>
+            <td><?= $i++; ?></td>
             <td><img src="/img/<?= $book['cover']; ?>" alt="<?= $book['cover']; ?>" width="50"></td>
             <td><?= $book['title']; ?></td>
             <td><?= $book['publisher']; ?></td>

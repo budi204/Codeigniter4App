@@ -44,6 +44,7 @@ $routes->post('/book/update/(:num)', 'Books::update/$1');
 $routes->delete('/book/(:num)', 'Books::delete/$1');
 $routes->get('/book/(:any)', 'Books::detail/$1');
 
+$routes->get('/mahasiswa', 'Mahasiswa::index');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

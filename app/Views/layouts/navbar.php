@@ -15,6 +15,9 @@
             <li class="nav-item">
               <a class="nav-link" href="<?= base_url('/book'); ?>">Books</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="<?= base_url('/mahasiswa'); ?>">Mahasiswa</a>
+            </li>
           </ul>
         </div>
     </div>
